@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+data/labels/*.cache
+.DS_Store
+.env
+
