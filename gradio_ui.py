@@ -216,7 +216,7 @@ def load_model():
 model = load_model()
 
 
-# -----------------------------
+
 # Detection Function
 # -----------------------------
 def detect_and_draw(img_bgr, conf=0.5):
