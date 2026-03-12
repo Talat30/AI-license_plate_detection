@@ -1,0 +1,17 @@
+# License Plate Detection YOLO Configuration
+
+# Dataset paths
+path: c:/Users/ADMIN/OneDrive/Desktop/insem lab obj/data
+train: images/train
+val: images/val
+
+# Number of classes
+nc: 1
+
+# Class names
+names:
+  0: license_plate
+
+# Image settings
+imgsz: 640
+
