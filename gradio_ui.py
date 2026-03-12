@@ -208,10 +208,10 @@ def load_model():
     model_path = MODEL_DIR / "license_plate_detector" / "weights" / "best.pt"
 
     if model_path.exists():
-        print(f"✅ Loading trained model: {model_path}")
+        print(f"Loading trained model: {model_path}")
         return YOLO(str(model_path))
     else:
-        print("⚠️ Custom model not found. Using YOLOv8n default model.")
+        print("Custom model not found. Using YOLOv8n default model.")
         return YOLO("yolov8n.pt")
 
 model = load_model()
@@ -259,7 +259,7 @@ def detect_and_draw(img_bgr, conf=0.5):
 def gradio_fn(img_pil, conf):
 
     if img_pil is None:
-        return None, "⚠️ Please upload an image"
+        return None, "Please upload an image"
 
     np_img = np.array(img_pil)
     bgr = cv2.cvtColor(np_img, cv2.COLOR_RGB2BGR)
@@ -274,14 +274,14 @@ def gradio_fn(img_pil, conf):
 # -----------------------------
 custom_css = """
 body{
-background: linear-gradient(135deg,#1e1b4b,#312e81,#1e3a8a);
-font-family: 'Segoe UI', sans-serif;
+background:#eef2ff;
+font-family:'Segoe UI',sans-serif;
 }
 
 .header{
 text-align:center;
-padding:20px;
-color:white;
+padding:30px;
+color:#1e293b;
 }
 
 .logo{
@@ -290,33 +290,31 @@ margin-bottom:10px;
 }
 
 .card{
-background: rgba(255,255,255,0.05);
-backdrop-filter: blur(10px);
-border-radius:18px;
+background:white;
 padding:25px;
-margin-bottom:20px;
-box-shadow:0 8px 20px rgba(0,0,0,0.4);
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+margin-bottom:25px;
 }
 
 .gr-button{
-background: linear-gradient(90deg,#9333ea,#6366f1);
+background:#2563eb;
 color:white;
 border:none;
+border-radius:10px;
 font-weight:600;
-font-size:17px;
-border-radius:12px;
+font-size:16px;
 padding:10px;
 }
 
 .gr-button:hover{
-background: linear-gradient(90deg,#7c3aed,#4f46e5);
+background:#1d4ed8;
 }
 
 footer{
 text-align:center;
-margin-top:20px;
-color:#d1d5db;
-font-size:14px;
+margin-top:25px;
+color:#64748b;
 }
 """
 
@@ -326,37 +324,40 @@ font-size:14px;
 # -----------------------------
 with gr.Blocks(css=custom_css) as demo:
 
+    # Header
     gr.HTML("""
     <div class="header">
         <img class="logo" src="https://cdn-icons-png.flaticon.com/512/744/744465.png">
-        <h1>AI License Plate Detection</h1>
-        <p>Deep Learning powered by YOLOv8</p>
+        <h1>License Plate Detection AI</h1>
+        <p>Upload a vehicle image and detect license plates instantly</p>
     </div>
     """)
 
+    # Upload Section
     with gr.Group(elem_classes="card"):
 
-        gr.Markdown("### 🚗 Upload Vehicle Image")
+        gr.Markdown("### Upload Vehicle Image")
 
-        input_img = gr.Image(type="pil", label="Upload Image")
+        input_img = gr.Image(type="pil", label="Vehicle Image")
 
         conf_slider = gr.Slider(
             0.25,
             0.9,
             value=0.5,
-            label="Detection Confidence"
+            label="Confidence Threshold"
         )
 
-        detect_btn = gr.Button("🚀 Start Detection")
+        detect_btn = gr.Button("Detect Plate")
 
 
+    # Result Section
     with gr.Group(elem_classes="card"):
 
-        gr.Markdown("### 🔍 Detection Output")
+        gr.Markdown("### Detection Result")
 
-        output_img = gr.Image(label="Detected License Plate")
+        output_img = gr.Image(label="Detected Image")
 
-        output_log = gr.Textbox(label="Detection Log")
+        output_log = gr.Textbox(label="Detection Info")
 
 
     detect_btn.click(
@@ -365,9 +366,10 @@ with gr.Blocks(css=custom_css) as demo:
         outputs=[output_img, output_log]
     )
 
+    # Footer
     gr.HTML("""
     <footer>
-    AI Vision Project • YOLOv8 • 2026
+    License Plate Detection • YOLOv8 • AI Vision Project
     </footer>
     """)
 
