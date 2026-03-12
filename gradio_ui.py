@@ -4,6 +4,7 @@ import numpy as np
 from ultralytics import YOLO
 from PIL import Image
 from pathlib import Path
+import os
 
 # Project paths
 WORK_DIR = Path(".")
@@ -23,6 +24,7 @@ def load_model():
         return YOLO("yolov8n.pt")
 
 model = load_model()
+
 
 # -----------------------------
 # Detection Function
@@ -110,13 +112,6 @@ margin-bottom:20px;
 width:70px;
 }
 
-.section{
-background:#111827;
-padding:25px;
-border-radius:15px;
-margin-bottom:20px;
-}
-
 .gr-button{
 background:linear-gradient(90deg,#22c55e,#16a34a);
 color:white;
@@ -133,12 +128,12 @@ color:#9ca3af;
 }
 """
 
+
 # -----------------------------
 # UI Layout
 # -----------------------------
 with gr.Blocks(css=custom_css) as demo:
 
-    # Header
     gr.HTML("""
     <div class="header">
         <img class="logo" src="https://cdn-icons-png.flaticon.com/512/744/744465.png">
@@ -147,7 +142,6 @@ with gr.Blocks(css=custom_css) as demo:
     </div>
     """)
 
-    # Upload Section
     with gr.Group():
         gr.Markdown("## 📤 Upload Vehicle Image")
 
@@ -163,7 +157,6 @@ with gr.Blocks(css=custom_css) as demo:
         detect_btn = gr.Button("🚀 Run Detection")
 
 
-    # Result Section
     with gr.Group():
         gr.Markdown("## 📊 Detection Result")
 
@@ -178,19 +171,21 @@ with gr.Blocks(css=custom_css) as demo:
         outputs=[output_img, output_log]
     )
 
-
-    # Footer
     gr.HTML("""
     <footer>
     Developed for AI Vision Project • YOLOv8 • 2026
     </footer>
     """)
 
+
 # -----------------------------
-# Launch
+# Launch (Deployment Safe)
 # -----------------------------
 if __name__ == "__main__":
+
+    port = int(os.environ.get("PORT", 7860))
+
     demo.launch(
-        server_name="127.0.0.1",
-        server_port=7860
+        server_name="0.0.0.0",
+        server_port=port
     )
