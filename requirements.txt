@@ -1,7 +1,10 @@
-torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+--index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
+torchaudio
 gradio
 ultralytics
-opencv-python-headless==4.10.0.84
+opencv-python-headless
 pillow
 numpy
 
