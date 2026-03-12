@@ -197,7 +197,6 @@ from PIL import Image
 from pathlib import Path
 import os
 
-# Project paths
 WORK_DIR = Path(".")
 MODEL_DIR = WORK_DIR / "models"
 
@@ -270,51 +269,67 @@ def gradio_fn(img_pil, conf):
 
 
 # -----------------------------
-# Custom CSS (New UI Style)
+# Custom CSS (New UI)
 # -----------------------------
 custom_css = """
+
 body{
-background:#eef2ff;
-font-family:'Segoe UI',sans-serif;
+background: linear-gradient(135deg,#0f172a,#1e3a8a,#9333ea);
+font-family: 'Segoe UI', sans-serif;
+color:white;
 }
 
 .header{
 text-align:center;
-padding:30px;
-color:#1e293b;
+padding:40px;
+}
+
+.header h1{
+font-size:40px;
+font-weight:800;
+background: linear-gradient(90deg,#22d3ee,#a78bfa);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
 .logo{
-width:60px;
-margin-bottom:10px;
+width:80px;
+margin-bottom:15px;
 }
 
 .card{
-background:white;
-padding:25px;
-border-radius:16px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
+background: rgba(255,255,255,0.1);
+backdrop-filter: blur(12px);
+border-radius:20px;
+padding:30px;
 margin-bottom:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
 .gr-button{
-background:#2563eb;
+background: linear-gradient(90deg,#f59e0b,#ef4444);
 color:white;
+font-size:18px;
+font-weight:700;
+border-radius:12px;
+padding:12px;
 border:none;
-border-radius:10px;
-font-weight:600;
-font-size:16px;
-padding:10px;
 }
 
 .gr-button:hover{
-background:#1d4ed8;
+background: linear-gradient(90deg,#f97316,#dc2626);
+transform: scale(1.05);
+}
+
+.gr-slider input{
+accent-color:#22d3ee;
 }
 
 footer{
 text-align:center;
-margin-top:25px;
-color:#64748b;
+margin-top:30px;
+color:#cbd5f5;
+font-size:14px;
 }
 """
 
@@ -324,40 +339,37 @@ color:#64748b;
 # -----------------------------
 with gr.Blocks(css=custom_css) as demo:
 
-    # Header
     gr.HTML("""
     <div class="header">
         <img class="logo" src="https://cdn-icons-png.flaticon.com/512/744/744465.png">
-        <h1>License Plate Detection AI</h1>
-        <p>Upload a vehicle image and detect license plates instantly</p>
+        <h1>AI License Plate Detector</h1>
+        <p>Smart vehicle plate detection powered by YOLOv8</p>
     </div>
     """)
 
-    # Upload Section
     with gr.Group(elem_classes="card"):
 
-        gr.Markdown("### Upload Vehicle Image")
+        gr.Markdown("## 🚗 Upload Vehicle Image")
 
-        input_img = gr.Image(type="pil", label="Vehicle Image")
+        input_img = gr.Image(type="pil", label="Upload Image")
 
         conf_slider = gr.Slider(
             0.25,
             0.9,
             value=0.5,
-            label="Confidence Threshold"
+            label="Detection Confidence"
         )
 
-        detect_btn = gr.Button("Detect Plate")
+        detect_btn = gr.Button("🚀 Start AI Detection")
 
 
-    # Result Section
     with gr.Group(elem_classes="card"):
 
-        gr.Markdown("### Detection Result")
+        gr.Markdown("## 📊 Detection Result")
 
-        output_img = gr.Image(label="Detected Image")
+        output_img = gr.Image(label="Detected Plate Image")
 
-        output_log = gr.Textbox(label="Detection Info")
+        output_log = gr.Textbox(label="Detection Summary")
 
 
     detect_btn.click(
@@ -366,10 +378,10 @@ with gr.Blocks(css=custom_css) as demo:
         outputs=[output_img, output_log]
     )
 
-    # Footer
+
     gr.HTML("""
     <footer>
-    License Plate Detection • YOLOv8 • AI Vision Project
+    AI Vision Project • YOLOv8 • License Plate Detection
     </footer>
     """)
 
